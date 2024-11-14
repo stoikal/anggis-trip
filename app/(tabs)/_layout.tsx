@@ -19,12 +19,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="kontak"
+        name="time"
         options={{
-          title: 'Kontak',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="contacts.fill" color={color} />,
+          title: "Time",
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="clock" color={color} />,
         }}
       />
+        
+      {/* TODO NOTES */}
     </Tabs>
   );
 }
