@@ -12,10 +12,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="kamus"
+        name="info"
         options={{
-          title: 'Kamus',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="translate.fill" color={color} />,
+          title: 'Info',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="info.circle" color={color} />,
         }}
       />
       <Tabs.Screen
