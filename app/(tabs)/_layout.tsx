@@ -3,7 +3,11 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 
 export default function TabLayout() {
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Tabs.Screen
         name="(agenda)"
         options={{
@@ -11,6 +15,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="calendar" color={color} />,
         }}
       />
+
       <Tabs.Screen
         name="phrases"
         options={{
@@ -32,7 +37,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="clock" color={color} />,
         }}
       />
-        
       {/* TODO NOTES */}
     </Tabs>
   );

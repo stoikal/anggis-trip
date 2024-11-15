@@ -15,14 +15,15 @@ export default function CurrentTime(props: CurrentTimeProps) {
           height: "100%",
           alignItems: "center",
           justifyContent: "flex-start",
-          paddingTop: 40
+          paddingTop: 40,
         }}
       >
         <View >
           <Text
             style={{
               fontSize: 20,
-              textAlign: "center"
+              textAlign: "center",
+              fontFamily: "monospace",
             }}
           >
             {props.label}
@@ -33,6 +34,7 @@ export default function CurrentTime(props: CurrentTimeProps) {
             style={{
               textAlign: "center",
               fontSize: 56,
+              // fontFamily: "monospace",
             }}
           >
             {props.time}
