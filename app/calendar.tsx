@@ -1,16 +1,8 @@
 import { Link } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { CalendarList, DateData } from 'react-native-calendars';
 import COLORS from '@/constants/colors';
 
-
-type onDayPressParam = {
-  year: number;
-  month: number;
-  day: number;
-  timestamp: number;
-  dateString: string;
-}
 
 export default function HomeScreen() {
   const currentMonth = new Date().getMonth() + 1;
@@ -20,8 +12,8 @@ export default function HomeScreen() {
   const pastScrollRange = Math.max(currentMonth - monthBegin, 0);
   const futureScrollRange = Math.max(monthEnd - currentMonth, 0);
 
-  const handleDayPress = (e: onDayPressParam) => {
-    alert(e.dateString)
+  const handleDayPress = (e: DateData) => {
+    alert(e.dateString);
   }
 
   return (
