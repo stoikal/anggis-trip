@@ -13,6 +13,7 @@ const MAPPING = {
   "captions.bubble": "translate",
   "info.circle": "info",
   "clock": "access-time",
+  "multiply": "close"
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],

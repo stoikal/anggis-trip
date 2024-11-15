@@ -1,7 +1,8 @@
 import { Link } from 'expo-router';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { CalendarList, DateData } from 'react-native-calendars';
 import COLORS from '@/constants/colors';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 
 
 export default function HomeScreen() {
@@ -18,6 +19,27 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: "white",
+          zIndex: 1,
+        }}
+      >
+        <View style={{ width: "15%" }}>
+          <Link href="/(tabs)/(agenda)" asChild>
+            <TouchableOpacity style={{ padding: 6 }}>
+              <IconSymbol style={{ width: 28 }} size={28} name="multiply" color="black" />
+            </TouchableOpacity>
+          </Link>
+        </View>
+        <View style={{ width: "70%", justifyContent: "center", flexDirection: "row" }}>
+
+        </View>
+        <View style={{ width: "15%", justifyContent: "flex-end", flexDirection: "row" }}>
+        </View>
+      </View>
       {/* <Calendar
         // hideExtraDays={false}
         // showSixWeeks
@@ -107,7 +129,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // maxHeight: "100%"
   },
 });
