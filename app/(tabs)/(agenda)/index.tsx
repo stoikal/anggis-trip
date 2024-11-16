@@ -2,7 +2,7 @@ import React, { useCallback, useState, useMemo } from 'react';
 import { View, Image, ScrollView } from 'react-native';
 import { CalendarProvider, DateData, WeekCalendar } from 'react-native-calendars';
 import { useRouter } from 'expo-router';
-import FLIGHTS from '@/data/flights';
+import FLIGHTS, { Flight } from '@/data/flights';
 import { Appbar } from 'react-native-paper';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -13,15 +13,50 @@ import COLORS from '@/constants/colors';
 dayjs.extend(duration);
 
 const WeekViewScreen = () => {
+  const router = useRouter();
+
   const today = new Date().toISOString().split('T')[0];
 
   const [selectedDate, setSelectedDate] = useState(today);
 
-  const router = useRouter();
-
   const onDateChanged = useCallback((dateString: string) => {
     setSelectedDate(dateString);
   }, []);
+
+  const getCountDown = (flight: Flight, fromTimestamp: number) => {
+    const next = dayjs(flight.timestamp);
+
+    const diff = next.diff(fromTimestamp)
+    const duration = dayjs.duration(diff);
+
+    const days = duration.days();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+
+    let result = "";
+
+    if (days > 1) {
+      result += `${days} days `;
+    } else if (days === 1) {
+      result += `${days} day `;
+    }
+
+    if (hours > 1) {
+      result += `${hours} hours `;
+    } else if (hours === 1) {
+      result += `${hours} hour `;
+    } else if (days > 0 && minutes > 0) {
+      result += `${hours} hours `;
+    }
+
+    if (minutes > 1) {
+      result += `${minutes} minutes `;
+    } else if (minutes === 1) {
+      result += `${minutes} minute `;
+    }
+
+    return result;
+  }
 
   const nextFlight = useMemo(() => {
     const selectedDateTimestamp = dayjs(selectedDate).valueOf();
@@ -38,25 +73,16 @@ const WeekViewScreen = () => {
   const nextFlightCountDown = useMemo(() => {
     if (!nextFlight) return "";
 
-    const selectedDateTimestamp = dayjs(selectedDate).valueOf();
-    const nowTimestamp = dayjs().valueOf();
+    const now = dayjs();
+    const isToday = now.isSame(selectedDate, "day");
 
-    const timetamp = Math.max(selectedDateTimestamp, nowTimestamp);
+    const timestamp = isToday ? now.valueOf() : dayjs(selectedDate).valueOf();
 
-    const next = dayjs(nextFlight.timestamp);
-
-    const diff = next.diff(timetamp)
-    const dur = dayjs.duration(diff);
-
-    const day = dur.days();
-    const hour = dur.hours();
-    const minutes = dur.minutes();
-
-    return `${day} days ${hour} hours ${minutes} minutes`;
+    return getCountDown(nextFlight, timestamp)
   }, [nextFlight, selectedDate]);
 
   const title = useMemo(() => {
-    return dayjs(selectedDate).format("MMMM DD")
+    return dayjs(selectedDate).format("MMMM DD");
   }, [selectedDate])
 
   // USER

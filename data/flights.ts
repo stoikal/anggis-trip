@@ -3,7 +3,7 @@ type Airport = {
   name: string;
 }
 
-type Flight = {
+export type Flight = {
   from: Airport;
   to: Airport;
   timestamp: number;
@@ -47,6 +47,11 @@ const getTimestamp = (date: string, time: string, offset: string): number => {
 
 
 const FLIGHTS: Flight[] = [
+  {
+    from: AIRPORTS.SOETTA,
+    to: AIRPORTS.HONGKONG,
+    timestamp: getTimestamp("2024-11-17", "00:15", "+07:00"),
+  },
   {
     from: AIRPORTS.SOETTA,
     to: AIRPORTS.HONGKONG,
