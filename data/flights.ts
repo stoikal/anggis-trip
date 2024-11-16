@@ -24,24 +24,9 @@ const AIRPORTS = {
     name: "Narita",
   },
 
-  HANEDA: {
-    iata: "HND",
-    name: "Haneda"
-  },
-
   // OSAKA
 
-  ITAMI: {
-    iata: "HND",
-    name: "Haneda"
-  },
-
   KANSAI: {
-    iata: "HND",
-    name: "Haneda"
-  },
-
-  KOBE: {
     iata: "HND",
     name: "Haneda"
   },
@@ -73,7 +58,7 @@ const FLIGHTS: Flight[] = [
     timestamp: getTimestamp("2024-11-23", "10:30", "+08:00"),
   },
   {
-    from: AIRPORTS.ITAMI,
+    from: AIRPORTS.KANSAI,
     to: AIRPORTS.HONGKONG,
     timestamp: getTimestamp("2024-11-30", "09:25", "+09:00"),
   },
