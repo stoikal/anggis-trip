@@ -34,7 +34,7 @@ export default function FlightCard (props: FlightCardProps) {
   return (
     <Surface
       style={{
-        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        backgroundColor: "rgba(255, 255, 255, 0.96)",
         ...props.style as object,
       }}
     >
