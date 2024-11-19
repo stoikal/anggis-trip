@@ -1,8 +1,7 @@
-import { useRouter } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { CalendarList, DateData } from 'react-native-calendars';
 import COLORS from '@/constants/colors';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { useRouter } from 'expo-router';
+import { StyleSheet } from 'react-native';
+import { CalendarList, DateData } from 'react-native-calendars';
 import { Appbar } from 'react-native-paper';
 
 export default function HomeScreen() {

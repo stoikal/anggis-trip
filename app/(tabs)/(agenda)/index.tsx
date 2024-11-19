@@ -4,9 +4,9 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import { CalendarProvider, WeekCalendar } from 'react-native-calendars';
-import { Appbar } from 'react-native-paper';
+import { Appbar, Text } from 'react-native-paper';
 
 import FlightCard from '@/components/FlightCard';
 import COLORS from '@/constants/colors';
@@ -102,7 +102,38 @@ const WeekViewScreen = () => {
 
   const title = useMemo(() => {
     return dayjs(selectedDate).format("MMMM DD");
-  }, [selectedDate])
+  }, [selectedDate]);
+
+  const markedDates = useMemo(() => {
+    const dates: Record<string, any> = {
+      "2024-11-22": { color: COLORS.JAKARTA, textColor: "white", startingDay: true },
+      "2024-11-23": { color: COLORS.TOKYO, textColor: "white" },
+      "2024-11-24": { color: COLORS.TOKYO, textColor: "white" },
+      "2024-11-25": { color: COLORS.TOKYO, textColor: "white" },
+      "2024-11-26": { color: COLORS.TOKYO, textColor: "white" },
+      "2024-11-27": { color: COLORS.OSAKA, textColor: "white" },
+      "2024-11-28": { color: COLORS.OSAKA, textColor: "white" },
+      "2024-11-29": { color: COLORS.OSAKA, textColor: "white" },
+      "2024-11-30": { color: COLORS.HONGKONG, textColor: "white" },
+      "2024-12-01": { color: COLORS.JAKARTA, textColor: "white", endingDay: true },
+    }
+
+    if (dates[today]) {
+      dates[today].today = true;
+    } else {
+      dates[today] = { today: true }
+    }
+
+    if (dates[selectedDate]) {
+      dates[selectedDate].selected = true;
+      // dates[selectedDate].dotColor = "white";
+      // dates[selectedDate].textColor = "white";
+    } else {
+      dates[selectedDate] = { selected: true };
+    }
+
+    return dates;
+  }, [selectedDate]);
 
   // USER
 
@@ -131,21 +162,63 @@ const WeekViewScreen = () => {
           date={today}
           onDateChanged={onDateChanged}
           showTodayButton
+          theme={{
+            selectedDayTextColor: "red"
+          }}
         >
           <WeekCalendar
             firstDay={1}
             markingType="period"
-            markedDates={{
-              "2024-11-22": { color: COLORS.JAKARTA, textColor: "white", startingDay: true },
-              "2024-11-23": { color: COLORS.TOKYO, textColor: "white" },
-              "2024-11-24": { color: COLORS.TOKYO, textColor: "white" },
-              "2024-11-25": { color: COLORS.TOKYO, textColor: "white" },
-              "2024-11-26": { color: COLORS.TOKYO, textColor: "white" },
-              "2024-11-27": { color: COLORS.OSAKA, textColor: "white" },
-              "2024-11-28": { color: COLORS.OSAKA, textColor: "white" },
-              "2024-11-29": { color: COLORS.OSAKA, textColor: "white" },
-              "2024-11-30": { color: COLORS.HONGKONG, textColor: "white" },
-              "2024-12-01": { color: COLORS.JAKARTA, textColor: "white", endingDay: true },
+            markedDates={markedDates}
+            customHeaderTitle={<Text>ss</Text>}
+            dayComponent={({date, state, marking}) => {
+              return (
+                <TouchableOpacity onPress={() => onDateChanged(date?.dateString as string)}>
+                  <View
+                    style={{
+                      backgroundColor: marking?.color,
+                      width: 56,
+                      height: "100%",
+                      justifyContent: "center",
+                      ...marking?.startingDay && {
+                        borderBottomLeftRadius: 20,
+                        borderTopLeftRadius: 20,
+                      },
+                      ...marking?.endingDay && {
+                        borderBottomRightRadius: 20,
+                        borderTopRightRadius: 20,
+                      }
+                    }}
+                  >
+                    {marking?.selected && (
+
+                      <View
+                        style={{
+                          width: 28,
+                          height: 28,
+                          backgroundColor: marking?.color ? "white" : "black",
+                          position: "absolute",
+                          left: "50%",
+                          top: "50%",
+                          transform: "translate(-50%, -50%);",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    )}
+                    <Text
+                      variant="bodyLarge"
+                      style={{
+                        textAlign: 'center',
+                        color: marking?.disabled ? 'gray' : marking?.selected && !marking?.color ? "white" : "black",
+                        fontWeight: marking?.today ? 'bold' : 'regular'
+                      }}
+                    >
+                      {date?.day}
+                    </Text>
+
+                  </View>
+                </TouchableOpacity>
+              );
             }}
           />
           
