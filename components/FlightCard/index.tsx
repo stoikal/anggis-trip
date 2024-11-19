@@ -34,7 +34,8 @@ export default function FlightCard (props: FlightCardProps) {
   return (
     <Surface
       style={{
-        backgroundColor: "rgba(255, 255, 255, 0.9)"
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        ...props.style as object,
       }}
     >
       <View
@@ -45,7 +46,7 @@ export default function FlightCard (props: FlightCardProps) {
           justifyContent: "space-between",
         }}
       >
-        <Text>Next flight in: {props.countdown} </Text>
+        <Text>Flight in: {props.countdown} </Text>
         <Text> {props.flight.code}</Text>
       </View>
       <View

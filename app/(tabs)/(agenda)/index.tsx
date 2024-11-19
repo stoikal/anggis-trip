@@ -3,7 +3,7 @@ import duration from 'dayjs/plugin/duration';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image, ScrollView, View } from 'react-native';
 import { CalendarProvider, WeekCalendar } from 'react-native-calendars';
 import { Appbar } from 'react-native-paper';
@@ -28,10 +28,22 @@ const WeekViewScreen = () => {
     setSelectedDate(dateString);
   }, []);
 
-  const getCountDown = (flight: Flight, fromTimestamp: number) => {
-    const next = dayjs(flight.departure.timestamp);
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
 
-    const diff = next.diff(fromTimestamp)
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000 * 60);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const getCountDown = useCallback((flight: Flight) => {
+    const isToday = dayjs(currentTime).isSame(selectedDate, "day");
+
+    const from = isToday ? currentTime : selectedDate;
+
+    const diff = dayjs(flight.departure.timestamp).diff(from);
     const duration = dayjs.duration(diff);
 
     const days = duration.days();
@@ -60,31 +72,33 @@ const WeekViewScreen = () => {
     }
 
     return result;
-  }
+  }, [currentTime, selectedDate])
 
-  const nextFlight = useMemo(() => {
+  const flights = useMemo(() => {
+    const result: Flight[] = [];
+
+    FLIGHTS.forEach((flight) => {
+      const isInSelectedDay = dayjs(flight.departure.timestamp).isSame(selectedDate, "day");
+      if (isInSelectedDay) {
+        result.push(flight);
+      }
+    });
+
+    if (result.length) return result;
+    
     const selectedDateTimestamp = dayjs(selectedDate).valueOf();
     const currentLocalTimestamp = dayjs().valueOf();
+
     const timestamp = Math.max(selectedDateTimestamp, currentLocalTimestamp);
 
-    const flight = FLIGHTS.find((item) => {
+    const closestFlight = FLIGHTS.find((item) => {
       return item.departure.timestamp > timestamp;
     })
 
-    return flight ?? null;
+    if (closestFlight) result.push(closestFlight);
+    
+    return result;
   }, [selectedDate]);
-
-
-  const nextFlightCountDown = useMemo(() => {
-    if (!nextFlight) return "";
-
-    const now = dayjs();
-    const isToday = now.isSame(selectedDate, "day");
-
-    const timestamp = isToday ? now.valueOf() : dayjs(selectedDate).valueOf();
-
-    return getCountDown(nextFlight, timestamp)
-  }, [nextFlight, selectedDate]);
 
   const title = useMemo(() => {
     return dayjs(selectedDate).format("MMMM DD");
@@ -142,14 +156,16 @@ const WeekViewScreen = () => {
                 source={DAYS[selectedDate].coverImage}
               />
             )}
+
             <ScrollView style={{ height: "100%", position: "relative", flex: 1, padding: 16 }}>
-              {nextFlight && (
+              {flights.map((flight) => (
                 <FlightCard
-                  flight={nextFlight}
-                  countdown={nextFlightCountDown}
+                  key={flight.code}
+                  flight={flight}
+                  countdown={getCountDown(flight)}
                   style={{ marginBottom: 16 }}
                 />
-              )}            
+              ))}
             </ScrollView>
           </View>
 
