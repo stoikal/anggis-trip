@@ -12,6 +12,7 @@ import FlightCard from '@/components/FlightCard';
 import COLORS from '@/constants/colors';
 import DAYS from '@/data/days';
 import FLIGHTS, { Flight } from '@/data/flights';
+import IMAGES from '@/constants/images';
 
 dayjs.extend(duration);
 dayjs.extend(utc);
@@ -77,22 +78,24 @@ const WeekViewScreen = () => {
   const flights = useMemo(() => {
     const result: Flight[] = [];
 
+    const now = dayjs();
+
     FLIGHTS.forEach((flight) => {
       const isInSelectedDay = dayjs(flight.departure.timestamp).isSame(selectedDate, "day");
-      if (isInSelectedDay) {
+      const isFuture = dayjs(flight.departure.timestamp).isAfter(now);
+      if (isInSelectedDay && isFuture) {
         result.push(flight);
       }
     });
 
     if (result.length) return result;
-    
-    const selectedDateTimestamp = dayjs(selectedDate).valueOf();
-    const currentLocalTimestamp = dayjs().valueOf();
+  
 
-    const timestamp = Math.max(selectedDateTimestamp, currentLocalTimestamp);
+    const isToday = dayjs(now).isSame(selectedDate, "day");
+    const from = isToday ? now : selectedDate;
 
     const closestFlight = FLIGHTS.find((item) => {
-      return item.departure.timestamp > timestamp;
+      return dayjs(item.departure.timestamp).isAfter(from);
     })
 
     if (closestFlight) result.push(closestFlight);
@@ -223,12 +226,10 @@ const WeekViewScreen = () => {
           />
           
           <View style={{ flex: 1, position: "relative" }}>
-            {DAYS[selectedDate]?.coverImage && (
-              <Image
-                style={{ width: "100%", height: "100%", position: "absolute" }}
-                source={DAYS[selectedDate].coverImage}
-              />
-            )}
+            <Image
+              style={{ width: "100%", height: "100%", position: "absolute" }}
+              source={DAYS[selectedDate]?.coverImage || IMAGES.TANGKUBAN_1}
+            />
 
             <ScrollView style={{ height: "100%", position: "relative", flex: 1, padding: 16 }}>
               {flights.map((flight) => (

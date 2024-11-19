@@ -22,6 +22,9 @@ const IMAGES = {
   HONGKONG_1: require("@/assets/images/cover/aadil-ace-kbCRrh8g9TE-unsplash.jpg"),
   HONGKONG_2: require("@/assets/images/cover/david-cain-UdrBd-wry50-unsplash.jpg"),
   HONGKONG_3: require("@/assets/images/cover/meric-dagli-VE3G-xvNcb8-unsplash.jpg"),
+
+  TANGKUBAN_1: require("@/assets/images/cover/affan-fadhlan-9lNrOwMzXoQ-unsplash.jpg"),
+  TANGKUBAN_2: require("@/assets/images/cover/fairuz-naufal-zaki-r7KW7D7ZMug-unsplash.jpg"),
 }
 
 export default IMAGES;
