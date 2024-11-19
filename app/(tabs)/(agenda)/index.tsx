@@ -151,6 +151,26 @@ const WeekViewScreen = () => {
 
   // // current weather
 
+  const getColor = (marking: any) => {
+    let color = "black";
+
+    if (marking?.color) {
+      if (marking?.selected) {
+        color = marking?.color;
+      } else {
+        color = "white";
+      }
+    } else if (marking?.selected) {
+      color = "white";
+    }
+
+    // if (marking?.selected && !marking?.color) {
+    //   color = "black";
+    // }
+
+    return color;
+  }
+
   return (
     <>
       <Appbar.Header>
@@ -212,7 +232,7 @@ const WeekViewScreen = () => {
                       variant="bodyLarge"
                       style={{
                         textAlign: 'center',
-                        color: marking?.disabled ? 'gray' : marking?.selected && !marking?.color ? "white" : "black",
+                        color: (getColor(marking)),
                         fontWeight: marking?.today ? 'bold' : 'regular'
                       }}
                     >
