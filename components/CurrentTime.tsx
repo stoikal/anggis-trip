@@ -14,7 +14,7 @@ export default function CurrentTime(props: CurrentTimeProps) {
           height: "100%",
           alignItems: "center",
           justifyContent: "flex-start",
-          paddingTop: 40,
+          paddingTop: 24,
         }}
       >
         <View >

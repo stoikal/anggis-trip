@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
 import CurrentTime from '@/components/CurrentTime';
+import { Appbar } from 'react-native-paper';
 
 export default function Time() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -28,23 +29,28 @@ export default function Time() {
   const jakartaTime = getDate(currentTime, "Asia/Jakarta");
 
   return (
-    <View style={{ height: "100%" }}>
-      <CurrentTime
-        label="TOKYO"
-        time={tokyoTime}
-        style={{ height: "33%" }}
-      />
-      <CurrentTime
-        label="HONG KONG"
-        time={hongkongTime}
-        style={{ height: "33%" }}
-      />
-      <CurrentTime
-        label="JAKARTA"
-        time={jakartaTime}
-        style={{ height: "33%" }}
-      />
-    </View>
+    <>
+      <Appbar.Header>
+        <Appbar.Content title="Time" />
+      </Appbar.Header>
+      <View style={{ height: "100%" }}>
+        <CurrentTime
+          label="TOKYO (JST)"
+          time={tokyoTime}
+          style={{ height: "33%" }}
+        />
+        <CurrentTime
+          label="HONG KONG (HKT)"
+          time={hongkongTime}
+          style={{ height: "33%" }}
+        />
+        <CurrentTime
+          label="JAKARTA (WIB)"
+          time={jakartaTime}
+          style={{ height: "33%" }}
+        />
+      </View>
+    </>
   );
 }
 
