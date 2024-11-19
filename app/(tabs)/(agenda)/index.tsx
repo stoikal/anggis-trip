@@ -1,16 +1,21 @@
-import React, { useCallback, useState, useMemo } from 'react';
-import { View, Image, ScrollView } from 'react-native';
-import { CalendarProvider, DateData, WeekCalendar } from 'react-native-calendars';
-import { useRouter } from 'expo-router';
-import FLIGHTS, { Flight } from '@/data/flights';
-import { Appbar } from 'react-native-paper';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import DAYS from '@/data/days';
-import { Avatar, Button, Card, Text } from 'react-native-paper';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import { useRouter } from 'expo-router';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Image, ScrollView, View } from 'react-native';
+import { CalendarProvider, WeekCalendar } from 'react-native-calendars';
+import { Appbar } from 'react-native-paper';
+
+import FlightCard from '@/components/FlightCard';
 import COLORS from '@/constants/colors';
+import DAYS from '@/data/days';
+import FLIGHTS, { Flight } from '@/data/flights';
 
 dayjs.extend(duration);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const WeekViewScreen = () => {
   const router = useRouter();
@@ -24,7 +29,7 @@ const WeekViewScreen = () => {
   }, []);
 
   const getCountDown = (flight: Flight, fromTimestamp: number) => {
-    const next = dayjs(flight.timestamp);
+    const next = dayjs(flight.departure.timestamp);
 
     const diff = next.diff(fromTimestamp)
     const duration = dayjs.duration(diff);
@@ -39,20 +44,19 @@ const WeekViewScreen = () => {
       result += `${days} days `;
     } else if (days === 1) {
       result += `${days} day `;
-    }
+    } else {
 
-    if (hours > 1) {
-      result += `${hours} hours `;
-    } else if (hours === 1) {
-      result += `${hours} hour `;
-    } else if (days > 0 && minutes > 0) {
-      result += `${hours} hours `;
-    }
-
-    if (minutes > 1) {
-      result += `${minutes} minutes `;
-    } else if (minutes === 1) {
-      result += `${minutes} minute `;
+      if (hours > 1) {
+        result += `${hours} hours `;
+      } else if (hours === 1) {
+        result += `${hours} hour `;
+      }
+  
+      if (minutes > 1) {
+        result += `${minutes} minutes `;
+      } else if (minutes === 1) {
+        result += `${minutes} minute `;
+      }
     }
 
     return result;
@@ -60,10 +64,11 @@ const WeekViewScreen = () => {
 
   const nextFlight = useMemo(() => {
     const selectedDateTimestamp = dayjs(selectedDate).valueOf();
-    const timestamp = Math.max(selectedDateTimestamp, dayjs().valueOf());
+    const currentLocalTimestamp = dayjs().valueOf();
+    const timestamp = Math.max(selectedDateTimestamp, currentLocalTimestamp);
 
     const flight = FLIGHTS.find((item) => {
-      return item.timestamp > timestamp;
+      return item.departure.timestamp > timestamp;
     })
 
     return flight ?? null;
@@ -139,13 +144,11 @@ const WeekViewScreen = () => {
             )}
             <ScrollView style={{ height: "100%", position: "relative", flex: 1, padding: 16 }}>
               {nextFlight && (
-                <Card style={{ marginBottom: 16 }}>
-                  <Card.Title title="Next Flight" />
-                  <Card.Content>
-                    <Text>{nextFlight.from.iata} - {nextFlight.to.iata}</Text>
-                    <Text>{nextFlightCountDown}</Text>
-                  </Card.Content>
-                </Card>
+                <FlightCard
+                  flight={nextFlight}
+                  countdown={nextFlightCountDown}
+                  style={{ marginBottom: 16 }}
+                />
               )}            
             </ScrollView>
           </View>

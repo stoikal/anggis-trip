@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { StyleProp, ViewStyle } from 'react-native';
+import { View, Text, StyleProp, ViewStyle  } from 'react-native';
 
 export type CurrentTimeProps = {
   label: string;

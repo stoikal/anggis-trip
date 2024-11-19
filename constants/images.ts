@@ -7,7 +7,7 @@ const IMAGES = {
   TOKYO_2: require("@/assets/images/cover/meric-dagli-7NBO76G5JsE-unsplash.jpg"),
   TOKYO_3: require("@/assets/images/cover/denys-nevozhai--F3wMFrZ7z0-unsplash.jpg"),
 
-  KYOTO_1: require("@/assets/images/cover/mario-hafliger-jSFviCWnUsk-unsplash.jpg"),
+  FUSHIMI_INARI_1: require("@/assets/images/cover/mario-hafliger-jSFviCWnUsk-unsplash.jpg"),
 
   OSAKA_1: require("@/assets/images/cover/kit-ko-9zYjlA4LqTU-unsplash.jpg"),
   OSAKA_2: require("@/assets/images/cover/denys-nevozhai--F3wMFrZ7z0-unsplash.jpg"),
