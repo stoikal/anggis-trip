@@ -21,7 +21,7 @@ dayjs.extend(timezone);
 const WeekViewScreen = () => {
   const router = useRouter();
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = dayjs().format("YYYY-MM-DD");
 
   const [selectedDate, setSelectedDate] = useState(today);
 
@@ -182,7 +182,7 @@ const WeekViewScreen = () => {
       <View style={{ backgroundColor: "white", flex: 1}}>
 
         <CalendarProvider
-          date={today}
+          date={selectedDate}
           onDateChanged={onDateChanged}
           showTodayButton
           theme={{
