@@ -267,7 +267,7 @@ export default function WeekViewScreen () {
                     {/* <Button onPress={() => notes.deleteByIndex(index)}>delete</Button> */}
                     <View style={{ padding: 12 }}>
                       <Text variant="titleMedium">{note.title}</Text>
-                      <Text>{note.content}</Text>
+                      <Text style={{ marginBottom: 8 }}>{note.content}</Text>
                     </View>
                   </Surface>
                 </TouchableRipple>
@@ -302,7 +302,7 @@ export default function WeekViewScreen () {
           <NoteForm
             onSubmit={(note) => {
               notes.pushNote(note);
-              () => setIsCreateNoteModalVisible(false)
+              setIsCreateNoteModalVisible(false)
             }}
             onCancel={() => setIsCreateNoteModalVisible(false)}
           />
