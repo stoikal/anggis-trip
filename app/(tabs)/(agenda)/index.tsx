@@ -140,7 +140,7 @@ export default function WeekViewScreen () {
     }
 
     return dates;
-  }, [selectedDate]);
+  }, [selectedDate, today]);
 
   // // current weather
 
