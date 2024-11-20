@@ -1,7 +1,7 @@
 import { DayExpensesProvider } from '@/contexts/dayExpenses';
 import { migrateDbIfNeeded } from '@/db/db';
 import { Stack } from 'expo-router';
-import { SQLiteProvider, useSQLiteContext, type SQLiteDatabase } from 'expo-sqlite';
+import { SQLiteProvider } from 'expo-sqlite';
 import React from 'react';
 import {
   StatusBar

@@ -6,8 +6,8 @@ import useDailyBudget from '@/storage/useDailyBudget';
 import dayjs from 'dayjs';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Appbar, Button, DataTable, FAB, IconButton, Modal } from 'react-native-paper';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Appbar, DataTable, FAB, Modal } from 'react-native-paper';
 
 export default function DailyExpenses() {
   const { date } = useLocalSearchParams();
