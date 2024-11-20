@@ -255,7 +255,7 @@ export default function WeekViewScreen () {
           <View style={{ flex: 1, position: "relative" }}>
             <Image
               style={{ width: "100%", height: "100%", position: "absolute" }}
-              source={DAYS[selectedDate]?.coverImage || IMAGES.TANGKUBAN_1}
+              source={DAYS[selectedDate]?.coverImage || IMAGES.TANGKUBAN_2}
             />
 
             <ScrollView style={{ height: "100%", position: "relative", flex: 1, padding: 16 }}>
