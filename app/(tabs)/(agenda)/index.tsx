@@ -6,24 +6,30 @@ import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import { CalendarProvider, WeekCalendar } from 'react-native-calendars';
-import { Appbar, Text } from 'react-native-paper';
+import { Appbar, Modal, Surface, Text, TouchableRipple } from 'react-native-paper';
 
+import AgendaFab from '@/components/AgendaFab';
+import EditNoteForm from '@/components/EditNoteForm';
 import FlightCard from '@/components/FlightCard';
+import NoteForm from '@/components/NoteForm';
 import COLORS from '@/constants/colors';
+import IMAGES from '@/constants/images';
 import DAYS from '@/data/days';
 import FLIGHTS, { Flight } from '@/data/flights';
-import IMAGES from '@/constants/images';
+import useNotes, { Note } from '@/storage/useNotes';
 
 dayjs.extend(duration);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const WeekViewScreen = () => {
+export default function WeekViewScreen () {
   const router = useRouter();
 
   const today = dayjs().format("YYYY-MM-DD");
 
   const [selectedDate, setSelectedDate] = useState(today);
+
+  const notes = useNotes(selectedDate);
 
   const onDateChanged = useCallback((dateString: string) => {
     setSelectedDate(dateString);
@@ -103,7 +109,7 @@ const WeekViewScreen = () => {
     return result;
   }, [selectedDate]);
 
-  const title = useMemo(() => {
+  const appBarTitle = useMemo(() => {
     return dayjs(selectedDate).format("MMMM DD");
   }, [selectedDate]);
 
@@ -129,25 +135,12 @@ const WeekViewScreen = () => {
 
     if (dates[selectedDate]) {
       dates[selectedDate].selected = true;
-      // dates[selectedDate].dotColor = "white";
-      // dates[selectedDate].textColor = "white";
     } else {
       dates[selectedDate] = { selected: true };
     }
 
     return dates;
   }, [selectedDate]);
-
-  // USER
-
-  // pesan sesuatu
-  // tanya arah
-  // cara
-  // tanya harga
-
-  // day trip tgl 25 tokyo fuji, 28 kyoto
-  // H - trip
-  // budget planner
 
   // // current weather
 
@@ -164,18 +157,23 @@ const WeekViewScreen = () => {
       color = "white";
     }
 
-    // if (marking?.selected && !marking?.color) {
-    //   color = "black";
-    // }
-
     return color;
+  }
+
+  const [isCreateNoteModalVisible, setIsCreateNoteModalVisible] = useState(false);
+  const [isEditNoteModalVisible, setIsEditNoteModalVisible] = useState(false);
+  const [noteIndex, setNoteIndex] = useState(-1);
+
+  const getNotePressHandler = (note: Note, index: number) => () => {
+    // alert(index);
+    setNoteIndex(index);
+    setIsEditNoteModalVisible(true);
   }
 
   return (
     <>
       <Appbar.Header>
-        {/* <Appbar.BackAction /> */}
-        <Appbar.Content title={title} />
+        <Appbar.Content title={appBarTitle} />
         <Appbar.Action icon="calendar" onPress={() => router.push("/(tabs)/(agenda)/calendar")} />
       </Appbar.Header>
 
@@ -245,6 +243,8 @@ const WeekViewScreen = () => {
             }}
           />
           
+
+        
           <View style={{ flex: 1, position: "relative" }}>
             <Image
               style={{ width: "100%", height: "100%", position: "absolute" }}
@@ -252,6 +252,27 @@ const WeekViewScreen = () => {
             />
 
             <ScrollView style={{ height: "100%", position: "relative", flex: 1, padding: 16 }}>
+              {notes.notes.map((note, index) => (
+                <TouchableRipple
+                  key={index}
+                  onPress={getNotePressHandler(note, index)}
+                >
+                  <Surface
+                    key={index}
+                    style={{
+                      backgroundColor: "rgba(255, 255, 255, 0.96)",
+                      marginBottom: 16
+                    }}
+                  >
+                    {/* <Button onPress={() => notes.deleteByIndex(index)}>delete</Button> */}
+                    <View style={{ padding: 12 }}>
+                      <Text variant="titleMedium">{note.title}</Text>
+                      <Text>{note.content}</Text>
+                    </View>
+                  </Surface>
+                </TouchableRipple>
+              ))}
+
               {flights.map((flight) => (
                 <FlightCard
                   key={flight.code}
@@ -260,13 +281,54 @@ const WeekViewScreen = () => {
                   style={{ marginBottom: 16 }}
                 />
               ))}
-            </ScrollView>
-          </View>
 
+            
+              <View style={{ height: 80 }}></View>
+
+            </ScrollView>
+
+            <AgendaFab
+              onPressNote={() => setIsCreateNoteModalVisible(true)}
+            />
+          </View>
         </CalendarProvider>
+
+        <Modal
+          dismissable={false}
+          visible={isCreateNoteModalVisible}
+          onDismiss={() => setIsCreateNoteModalVisible(false)}
+          contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
+        >
+          <NoteForm
+            onSubmit={(note) => {
+              notes.pushNote(note);
+              () => setIsCreateNoteModalVisible(false)
+            }}
+            onCancel={() => setIsCreateNoteModalVisible(false)}
+          />
+        </Modal>
+
+        <Modal
+          dismissable={false}
+          visible={isEditNoteModalVisible}
+          onDismiss={() => setIsEditNoteModalVisible(false)}
+          contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
+        >
+          <EditNoteForm
+            initialData={notes.notes[noteIndex]}
+            onSubmit={(note) => {
+              notes.updateByIndex(noteIndex, note);
+              setIsEditNoteModalVisible(false);
+            }}
+            onCancel={() => setIsEditNoteModalVisible(false)}
+            onDelete={() => {
+              setIsEditNoteModalVisible(false);
+              notes.deleteByIndex(noteIndex);
+            }}
+          />
+        </Modal>
       </View>
     </>
   );
 };
 
-export default WeekViewScreen;
