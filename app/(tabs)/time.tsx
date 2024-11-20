@@ -1,5 +1,5 @@
-import { View, StyleSheet } from 'react-native';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import CurrentTime from '@/components/CurrentTime';
 import { Appbar } from 'react-native-paper';
 
@@ -53,11 +53,3 @@ export default function Time() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

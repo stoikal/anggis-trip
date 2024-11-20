@@ -1,3 +1,4 @@
+import React from 'react';
 import Phrase from '@/components/Phrase';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';

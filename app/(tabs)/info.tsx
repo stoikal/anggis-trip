@@ -1,14 +1,9 @@
-import { View, StyleSheet, Linking, TouchableOpacity, ScrollView, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
-import { Text, Button, Appbar } from 'react-native-paper';
+import React from 'react';
+import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Appbar, Button, Text } from 'react-native-paper';
 
 export default function DetailsScreen() {
-  const openMap = (url: string) => {
-    // https://maps.app.goo.gl/fsRWhsPP1AGfueDG8
-    Linking.openURL(url);
-  }
-
-  const openPhone = (phoneNum: string) => {
-    const url = `tel:${phoneNum}`;
+  const link = (url: string) => () => {
     Linking.openURL(url);
   }
 
@@ -24,7 +19,7 @@ export default function DetailsScreen() {
             <Text variant="titleMedium">Kedutaan Besar Republik Indonesia</Text>
 
             <TouchableOpacity
-              onPress={() => Linking.openURL("https://maps.app.goo.gl/fsRWhsPP1AGfueDG8")}
+              onPress={link("https://maps.app.goo.gl/fsRWhsPP1AGfueDG8")}
             >
               <Text
                 variant="bodyLarge"
@@ -34,7 +29,7 @@ export default function DetailsScreen() {
               </Text>
             </TouchableOpacity>
       
-            <TouchableOpacity onPress={() => openPhone("+810334414201")}>
+            <TouchableOpacity onPress={link("tel:+810334414201")}>
               <Text
                 variant="bodyLarge"
                 style={{ textDecorationLine: "underline"}}
@@ -51,7 +46,7 @@ export default function DetailsScreen() {
             <Text variant="titleMedium">Konsulat Jenderal Republik Indonesia</Text>
 
             <TouchableOpacity
-              onPress={() => Linking.openURL("https://maps.app.goo.gl/s1mcZmLGYMmzQ9E86")}
+              onPress={link("https://maps.app.goo.gl/s1mcZmLGYMmzQ9E86")}
             >
               <Text
                 variant="bodyLarge"
@@ -61,7 +56,7 @@ export default function DetailsScreen() {
               </Text>
             </TouchableOpacity>
       
-            <TouchableOpacity onPress={() => openPhone("81664499898")}>
+            <TouchableOpacity onPress={link("tel:81664499898")}>
               <Text
                 variant="bodyLarge"
                 style={{ textDecorationLine: "underline"}}
@@ -89,7 +84,7 @@ export default function DetailsScreen() {
 
             <View style={{ flexDirection: "row" }}>
               <View style={{ flex: 1, padding: 12 }}>
-                <Button onPress={() => openPhone("119")}>
+                <Button onPress={link("tel:119")}>
                   <Text
                     variant="titleLarge"
                     style={{ textAlign: "center", textDecorationLine: "underline" }}
@@ -97,7 +92,7 @@ export default function DetailsScreen() {
                     119
                   </Text>
                 </Button>
-                <TouchableOpacity onPress={() => openPhone("110")}>
+                <TouchableOpacity onPress={link("tel:110")}>
                   <Text style={{ textAlign: "center" }}>
                     Fire/Ambulance
                   </Text>
@@ -105,7 +100,7 @@ export default function DetailsScreen() {
               </View>
 
               <View style={{ flex: 1, padding: 12 }}>
-                <Button onPress={() => openPhone("110")}>
+                <Button onPress={link("tel:110")}>
                   <Text
                     variant="titleLarge"
                     style={{ textAlign: "center", textDecorationLine: "underline" }}
@@ -113,7 +108,7 @@ export default function DetailsScreen() {
                     110
                   </Text>
                 </Button>
-                <TouchableOpacity onPress={() => openPhone("110")}>
+                <TouchableOpacity onPress={link("tel:110")}>
                   <Text style={{ textAlign: "center" }}>
                     Police
                   </Text>
@@ -127,7 +122,7 @@ export default function DetailsScreen() {
             <Text variant="titleMedium">Konsulat Jenderal Republik Indonesia</Text>
 
             <TouchableOpacity
-              onPress={() => Linking.openURL("https://maps.app.goo.gl/kcqKMXmrEPzHGtoM9")}
+              onPress={link("https://maps.app.goo.gl/kcqKMXmrEPzHGtoM9")}
             >
               <Text
                 variant="bodyLarge"
@@ -137,7 +132,7 @@ export default function DetailsScreen() {
               </Text>
             </TouchableOpacity>
       
-            <TouchableOpacity onPress={() => openPhone("85236510200")}>
+            <TouchableOpacity onPress={link("tel:85236510200")}>
               <Text
                 variant="bodyLarge"
                 style={{ textDecorationLine: "underline"}}
@@ -154,7 +149,7 @@ export default function DetailsScreen() {
 
             <View style={{ flexDirection: "row" }}>
               <View style={{ flex: 1, padding: 12 }}>
-                <Button mode="text" onPress={() => openPhone("999")} style={{ flexDirection: "column"}}>
+                <Button mode="text" onPress={link("tel:999")} style={{ flexDirection: "column"}}>
                   <Text
                     variant="titleLarge"
                     style={{ textDecorationLine: "underline" }}
@@ -162,7 +157,7 @@ export default function DetailsScreen() {
                     999
                   </Text>
                 </Button>
-                <TouchableOpacity onPress={() => openPhone("999")}>
+                <TouchableOpacity onPress={link("tel:999")}>
                   <Text style={{ textAlign: "center" }}>
                     Fire/Police/Ambulance
                   </Text>

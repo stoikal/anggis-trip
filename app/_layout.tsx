@@ -1,9 +1,9 @@
 import { Stack } from 'expo-router';
+import React from 'react';
 import {
-  StatusBar,
-  AppRegistry
+  StatusBar
 } from 'react-native';
-import { PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
+import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 // import { name as appName } from '../app.json';
 
 const theme = {

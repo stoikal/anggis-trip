@@ -1,6 +1,6 @@
+import React from 'react';
 import COLORS from '@/constants/colors';
 import { useRouter } from 'expo-router';
-import { StyleSheet } from 'react-native';
 import { CalendarList, DateData } from 'react-native-calendars';
 import { Appbar } from 'react-native-paper';
 
@@ -110,10 +110,3 @@ export default function HomeScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // maxHeight: "100%"
-  },
-});
