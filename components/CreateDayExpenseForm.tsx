@@ -38,7 +38,7 @@ export default function CreateDayExpenseForm (props: CreateDayExpenseFormProps) 
   const expenses = useDayExpenses(props.date)
 
   const submit = async () => {
-    await expenses.createExpense({
+    await expenses.create({
       name,
       amount,
       category: categoryText

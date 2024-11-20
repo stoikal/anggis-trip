@@ -21,7 +21,7 @@ export default function HomeScreen() {
   return (
     <>
       <Appbar.Header>
-        <Appbar.BackAction onPress={() => router.push("/(tabs)/(agenda)")} />
+        <Appbar.BackAction onPress={() => router.back()} />
       </Appbar.Header>
       {/* <View style={styles.container}> */}
         {/* <Calendar

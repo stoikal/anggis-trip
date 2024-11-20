@@ -42,7 +42,7 @@ export const useDayExpenses = (date: string) => {
     }
   }, [])
 
-  const createExpense = useCallback(async (e: Omit<Expense, 'id' | 'date'>) => {
+  const create = useCallback(async (e: Omit<Expense, 'id' | 'date'>) => {
     try {
       const expense = [date, e.name, e.category, e.amount];
       await db.runAsync('INSERT INTO expenses (date, name, category, amount) VALUES (?, ?, ?, ?)', ...expense);
@@ -52,14 +52,34 @@ export const useDayExpenses = (date: string) => {
     }
   }, [date])
 
+  const update = useCallback(async (e: Expense) => {
+    try {
+      await db.runAsync('UPDATE expenses SET name = ?, category = ?, amount = ? WHERE id = ?', e.name, e.category, e.amount, e.id);
+      await loadExpenses(date);
+    } catch (e) {
+      console.log('===~error updating expense~===', '👀', e);
+    }
+  }, [date])
+
+  const deleteById = useCallback(async (id: number) => {
+    try {
+      await db.runAsync('DELETE FROM expenses WHERE id = ?', id);
+      await loadExpenses(date);
+    } catch (e) {
+      console.log('===~error updating expense~===', '👀', e);
+    }
+  }, [date])
+
   useEffect(() => {
-    ctx?.setExpenses([]);
+    // ctx?.setExpenses([]);
     if (date) loadExpenses(date);
   }, [date, loadExpenses]);
 
   return {
     data: ctx?.expenses || [],
-    createExpense
+    create,
+    update,
+    deleteById,
   }
 }
 

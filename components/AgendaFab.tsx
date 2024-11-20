@@ -22,14 +22,14 @@ export default function AgendaFab (props: AgendaFabProps) {
           icon={open ? 'close' : 'plus'}
           actions={[
             {
-              icon: 'currency-jpy',
-              label: 'Expense',
-              onPress: props.onPressExpense,
-            },
-            {
               icon: 'note',
               label: 'Note',
               onPress: props.onPressNote,
+            },
+            {
+              icon: 'currency-jpy',
+              label: 'Expense',
+              onPress: props.onPressExpense,
             },
           ]}
           onStateChange={onStateChange}
