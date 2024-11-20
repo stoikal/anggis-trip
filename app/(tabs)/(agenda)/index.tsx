@@ -17,6 +17,7 @@ import IMAGES from '@/constants/images';
 import DAYS from '@/data/days';
 import FLIGHTS, { Flight } from '@/data/flights';
 import useNotes, { Note } from '@/storage/useNotes';
+import ExpenseCard from '@/components/ExpenseCard';
 
 dayjs.extend(duration);
 dayjs.extend(utc);
@@ -281,6 +282,8 @@ export default function WeekViewScreen () {
                   style={{ marginBottom: 16 }}
                 />
               ))}
+
+              <ExpenseCard />
 
             
               <View style={{ height: 80 }}></View>
