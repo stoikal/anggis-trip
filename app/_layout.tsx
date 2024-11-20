@@ -1,4 +1,7 @@
+import { DayExpensesProvider } from '@/contexts/dayExpenses';
+import { migrateDbIfNeeded } from '@/db/db';
 import { Stack } from 'expo-router';
+import { SQLiteProvider, useSQLiteContext, type SQLiteDatabase } from 'expo-sqlite';
 import React from 'react';
 import {
   StatusBar
@@ -18,15 +21,19 @@ const theme = {
 
 export default function RootLayout() {
   return (
-    <PaperProvider theme={theme}>
-      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="(tabs)" />
-      </Stack>
-    </PaperProvider>
+    <SQLiteProvider databaseName="test.db" onInit={migrateDbIfNeeded}>
+      <DayExpensesProvider>
+        <PaperProvider theme={theme}>
+          <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="(tabs)" />
+          </Stack>
+        </PaperProvider>
+      </DayExpensesProvider>
+    </SQLiteProvider>
   );
 }

@@ -18,6 +18,7 @@ import DAYS from '@/data/days';
 import FLIGHTS, { Flight } from '@/data/flights';
 import useNotes, { Note } from '@/storage/useNotes';
 import ExpenseCard from '@/components/ExpenseCard';
+import CreateDayExpenseForm from '@/components/CreateDayExpenseForm';
 
 dayjs.extend(duration);
 dayjs.extend(utc);
@@ -171,6 +172,11 @@ export default function WeekViewScreen () {
     setIsEditNoteModalVisible(true);
   }
 
+  const [isCreateExpenseModalVisible, setIsCreateExpenseVisible] = useState(false);
+
+  const showCreateExpenseModal = () => setIsCreateExpenseVisible(true);
+  const hideCreateExpenseModal = () => setIsCreateExpenseVisible(false);
+
   return (
     <>
       <Appbar.Header>
@@ -283,15 +289,18 @@ export default function WeekViewScreen () {
                 />
               ))}
 
-              <ExpenseCard />
+              <ExpenseCard
+                date={selectedDate}
+              />
 
             
-              <View style={{ height: 80 }}></View>
+              <View style={{ height: 104 }}></View>
 
             </ScrollView>
 
             <AgendaFab
               onPressNote={() => setIsCreateNoteModalVisible(true)}
+              onPressExpense={showCreateExpenseModal}
             />
           </View>
         </CalendarProvider>
@@ -328,6 +337,18 @@ export default function WeekViewScreen () {
               setIsEditNoteModalVisible(false);
               notes.deleteByIndex(noteIndex);
             }}
+          />
+        </Modal>
+
+        <Modal
+          visible={isCreateExpenseModalVisible}
+          dismissable={false}
+          contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
+        >
+          <CreateDayExpenseForm
+            date={selectedDate}
+            onCancel={hideCreateExpenseModal}
+            onSuccess={hideCreateExpenseModal}
           />
         </Modal>
       </View>

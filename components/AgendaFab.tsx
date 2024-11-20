@@ -3,6 +3,7 @@ import { FAB } from 'react-native-paper';
 
 type AgendaFabProps = {
   onPressNote: () => void;
+  onPressExpense: () => void;
 }
 
 export default function AgendaFab (props: AgendaFabProps) {
@@ -23,7 +24,7 @@ export default function AgendaFab (props: AgendaFabProps) {
             {
               icon: 'currency-jpy',
               label: 'Expense',
-              onPress: () => console.log('Pressed star'),
+              onPress: props.onPressExpense,
             },
             {
               icon: 'note',
