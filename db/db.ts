@@ -9,8 +9,8 @@ export const CATEGORIES = {
   OTHER: "Other",
 }
 
-const expenses = [
-  ["2024-11-22", "Contoh", CATEGORIES.FOOD, 1500],
+const expensesSeed = [
+  ["2024-11-22", "Contoh", CATEGORIES.ESSENTIALS, 1500],
 ];
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
@@ -41,9 +41,17 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
           amount INTEGER
         );
       `);
+
+      await db.execAsync(`
+        PRAGMA journal_mode = 'wal';
+        CREATE TABLE IF NOT EXISTS daily_budget (
+          date TEXT PRIMARY KEY NOT NULL,
+          amount INTEGER
+        );
+      `);
       
 
-      for (let expense of expenses) {
+      for (let expense of expensesSeed) {
         await db.runAsync('INSERT INTO expenses (date, name, category, amount) VALUES (?, ?, ?, ?)', ...expense);
       }
     }

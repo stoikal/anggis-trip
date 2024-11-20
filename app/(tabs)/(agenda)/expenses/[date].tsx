@@ -1,6 +1,8 @@
 import CreateDayExpenseForm from '@/components/CreateDayExpenseForm';
+import DailyBudgetForm from '@/components/DailyBudgetForm';
 import EditDayExpenseForm from '@/components/EditdayExpenseForm';
 import { Expense, useDayExpenses } from '@/contexts/dayExpenses';
+import useDailyBudget from '@/storage/useDailyBudget';
 import dayjs from 'dayjs';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -11,14 +13,15 @@ export default function DailyExpenses() {
   const { date } = useLocalSearchParams();
 
   const expenses = useDayExpenses(date as string);
+  const budget = useDailyBudget(date as string);
 
   const total = useMemo(() => {
     return expenses.data.reduce((sum, expense) => sum + expense.amount, 0)
   }, [expenses]);
 
   const variance = useMemo(() => {
-    return 2000 - total;
-  }, [total])
+    return budget.amount - total;
+  }, [total, budget.amount])
 
   const varianceColor = useMemo(() => {
     return variance < 0 ? "red" : "green";
@@ -28,7 +31,7 @@ export default function DailyExpenses() {
 
   const title = useMemo(() => {
     return dayjs(date as string).format("MMMM DD")
-  }, []);
+  }, [date]);
 
 
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
@@ -42,12 +45,39 @@ export default function DailyExpenses() {
   const showCreateExpenseModal = () => setIsCreateExpenseVisible(true);
   const hideCreateExpenseModal = () => setIsCreateExpenseVisible(false);
 
+  const [isBudgetModalVisible, setIsBudgetModalVisible] = useState(false);
+
+  const showBudgetModal = () => setIsBudgetModalVisible(true);
+  const hideBudgetModal = () => setIsBudgetModalVisible(false);
+
+  const submitBudget = async (amt: number) => {
+    await budget.set(amt);
+    hideBudgetModal();
+  }
+
+  const nextDay = () => {
+    const tomorrow = dayjs(date as string).add(1, "day");
+    const tommorowDatestring = tomorrow.format("YYYY-MM-DD");
+
+    router.push(`/(tabs)/(agenda)/expenses/${tommorowDatestring}`)
+  }
+
+  const prevDay = () => {
+    const yesterday = dayjs(date as string).subtract(1, "day");
+    const yesterdayDatestring = yesterday.format("YYYY-MM-DD");
+
+    router.push(`/(tabs)/(agenda)/expenses/${yesterdayDatestring}`)
+  }
+
   return (
     <>
       <Appbar.Header>
         <Appbar.BackAction onPress={() => router.back()} />
         <Appbar.Content title={title} />
+        <Appbar.Action icon="chevron-left" onPress={prevDay} />
+        <Appbar.Action icon="chevron-right" onPress={nextDay} />
       </Appbar.Header>
+
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
           <DataTable>
@@ -74,14 +104,15 @@ export default function DailyExpenses() {
               </DataTable.Cell>
             </DataTable.Row>
       
-            <DataTable.Row>
+            <DataTable.Row onPress={showBudgetModal}>
               <DataTable.Cell>
                 <Text style={{ fontWeight: "bold" }}>Budget</Text>
               </DataTable.Cell>
               <DataTable.Cell numeric>
-                <Text style={{ fontWeight: "bold" }}>{(5000).toLocaleString()}</Text>
+                <Text style={{ fontWeight: "bold" }}>{(budget.amount).toLocaleString()}</Text>
               </DataTable.Cell>
             </DataTable.Row>
+
             <DataTable.Row>
               <DataTable.Cell>
                 <Text style={{ fontWeight: "bold" }}>Variance</Text>
@@ -124,16 +155,28 @@ export default function DailyExpenses() {
       </Modal>
 
       <Modal
-          visible={isCreateExpenseModalVisible}
-          dismissable={false}
-          contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
-        >
-          <CreateDayExpenseForm
-            date={date as string}
-            onCancel={hideCreateExpenseModal}
-            onSuccess={hideCreateExpenseModal}
-          />
-        </Modal>
+        visible={isCreateExpenseModalVisible}
+        dismissable={false}
+        contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
+      >
+        <CreateDayExpenseForm
+          date={date as string}
+          onCancel={hideCreateExpenseModal}
+          onSuccess={hideCreateExpenseModal}
+        />
+      </Modal>
+
+      <Modal
+        visible={isBudgetModalVisible}
+        dismissable={false}
+        contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
+      >
+        <DailyBudgetForm
+          initialAmount={budget.amount}
+          onCancel={hideBudgetModal}
+          onSubmit={submitBudget}
+        />
+      </Modal>
     </>
   );
 }
