@@ -190,16 +190,16 @@ export default function WeekViewScreen () {
         <CalendarProvider
           date={selectedDate}
           onDateChanged={onDateChanged}
+          todayBottomMargin={32}
           showTodayButton
           theme={{
-            selectedDayTextColor: "red"
+            todayButtonTextColor: COLORS.TOKYO,
           }}
         >
           <WeekCalendar
             firstDay={1}
             markingType="period"
             markedDates={markedDates}
-            customHeaderTitle={<Text>ss</Text>}
             dayComponent={({date, state, marking}) => {
               return (
                 <TouchableOpacity onPress={() => onDateChanged(date?.dateString as string)}>
@@ -299,12 +299,12 @@ export default function WeekViewScreen () {
 
             </ScrollView>
 
-            <AgendaFab
-              onPressNote={() => setIsCreateNoteModalVisible(true)}
-              onPressExpense={showCreateExpenseModal}
-            />
           </View>
         </CalendarProvider>
+        <AgendaFab
+          onPressNote={() => setIsCreateNoteModalVisible(true)}
+          onPressExpense={showCreateExpenseModal}
+        />
 
         <Modal
           dismissable={false}
