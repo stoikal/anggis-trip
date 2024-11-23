@@ -11,6 +11,7 @@ const MAPPING = {
   // See SF Symbols in the SF Symbols app on Mac.
   "calendar": "calendar-month",
   "captions.bubble": "translate",
+  "yensign.circle": "local-atm",
   "info.circle": "info",
   "clock": "access-time",
   "multiply": "close"
@@ -27,6 +28,9 @@ export type IconSymbolName = keyof typeof MAPPING;
  * An icon component that uses native SFSymbols on iOS, and MaterialIcons on Android and web. This ensures a consistent look across platforms, and optimal resource usage.
  *
  * Icon `name`s are based on SFSymbols and require manual mapping to MaterialIcons.
+ * 
+ * https://github.com/andrewtavis/sf-symbols-online
+ * https://hotpot.ai/free-icons
  */
 export function IconSymbol({
   name,

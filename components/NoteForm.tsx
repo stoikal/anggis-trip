@@ -1,8 +1,8 @@
 import React from "react";
-import { Note } from "@/storage/useNotes";
 import { useState } from "react";
 import { Button, Text, TextInput } from "react-native-paper";
 import { View } from "react-native";
+import { Note } from "@/types";
 
 type NoteFormProps = {
   onSubmit: (note: Note) => void;

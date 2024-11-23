@@ -20,12 +20,21 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
+        name="(budget)/index"
+        options={{
+          title: 'Budget',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="yensign.circle" color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
         name="phrases"
         options={{
           title: 'Phrases',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="captions.bubble" color={color} />,
         }}
       />
+
       <Tabs.Screen
         name="info"
         options={{
@@ -33,6 +42,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="info.circle" color={color} />,
         }}
       />
+
       <Tabs.Screen
         name="time"
         options={{

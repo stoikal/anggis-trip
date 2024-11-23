@@ -7,8 +7,8 @@ import { Expense } from '@/types';
 import dayjs from 'dayjs';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Appbar, DataTable, FAB, Modal } from 'react-native-paper';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Appbar, DataTable, FAB, Text, Modal } from 'react-native-paper';
 
 export default function DailyExpenses() {
   const { date } = useLocalSearchParams();
@@ -116,7 +116,7 @@ export default function DailyExpenses() {
 
             <DataTable.Row>
               <DataTable.Cell>
-                <Text style={{ fontWeight: "bold" }}>Variance</Text>
+                <Text variant="titleMedium">Variance</Text>
               </DataTable.Cell>
               <DataTable.Cell numeric>
                 <Text style={{ fontWeight: "bold", color: varianceColor }}>{variance.toLocaleString()}</Text>
