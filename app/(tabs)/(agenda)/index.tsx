@@ -6,7 +6,7 @@ import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import { CalendarProvider, WeekCalendar } from 'react-native-calendars';
-import { Appbar, Modal, Surface, Text, TouchableRipple } from 'react-native-paper';
+import { Appbar, Modal, Portal, Surface, Text, TouchableRipple } from 'react-native-paper';
 
 import AgendaFab from '@/components/AgendaFab';
 import EditNoteForm from '@/components/EditNoteForm';
@@ -305,41 +305,44 @@ export default function WeekViewScreen () {
           onPressNote={() => setIsCreateNoteModalVisible(true)}
           onPressExpense={showCreateExpenseModal}
         />
+        <Portal>
+          <Modal
+            dismissable={false}
+            visible={isCreateNoteModalVisible}
+            onDismiss={() => setIsCreateNoteModalVisible(false)}
+            contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
+          >
+            <NoteForm
+              onSubmit={(note) => {
+                notes.pushNote(note);
+                setIsCreateNoteModalVisible(false)
+              }}
+              onCancel={() => setIsCreateNoteModalVisible(false)}
+            />
+          </Modal>
+        </Portal>
 
-        <Modal
-          dismissable={false}
-          visible={isCreateNoteModalVisible}
-          onDismiss={() => setIsCreateNoteModalVisible(false)}
-          contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
-        >
-          <NoteForm
-            onSubmit={(note) => {
-              notes.pushNote(note);
-              setIsCreateNoteModalVisible(false)
-            }}
-            onCancel={() => setIsCreateNoteModalVisible(false)}
-          />
-        </Modal>
-
-        <Modal
-          dismissable={false}
-          visible={isEditNoteModalVisible}
-          onDismiss={() => setIsEditNoteModalVisible(false)}
-          contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
-        >
-          <EditNoteForm
-            initialData={notes.notes[noteIndex]}
-            onSubmit={(note) => {
-              notes.updateByIndex(noteIndex, note);
-              setIsEditNoteModalVisible(false);
-            }}
-            onCancel={() => setIsEditNoteModalVisible(false)}
-            onDelete={() => {
-              setIsEditNoteModalVisible(false);
-              notes.deleteByIndex(noteIndex);
-            }}
-          />
-        </Modal>
+        <Portal>
+          <Modal
+            dismissable={false}
+            visible={isEditNoteModalVisible}
+            onDismiss={() => setIsEditNoteModalVisible(false)}
+            contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
+          >
+            <EditNoteForm
+              initialData={notes.notes[noteIndex]}
+              onSubmit={(note) => {
+                notes.updateByIndex(noteIndex, note);
+                setIsEditNoteModalVisible(false);
+              }}
+              onCancel={() => setIsEditNoteModalVisible(false)}
+              onDelete={() => {
+                setIsEditNoteModalVisible(false);
+                notes.deleteByIndex(noteIndex);
+              }}
+            />
+          </Modal>
+        </Portal>
 
         <Modal
           visible={isCreateExpenseModalVisible}

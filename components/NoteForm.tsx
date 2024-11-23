@@ -50,7 +50,7 @@ export default function NoteForm (props: NoteFormProps) {
         onChangeText={setContent}
         // numberOfLines={10}
         style={{
-          height: 376, //392 Adjust the height as needed
+          height: 320, //392 Adjust the height as needed
         }}
       />
 
