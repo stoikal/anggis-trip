@@ -130,7 +130,6 @@ export default function DailyExpenses() {
 
         </ScrollView>
           <FAB
-            size="small"
             icon="currency-jpy"
             style={{
               position: 'absolute',

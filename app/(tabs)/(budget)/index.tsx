@@ -99,7 +99,7 @@ export default function BudgetScreen () {
           />
         </View>
         
-        <View style={{ marginBottom: 40 }}>
+        <View style={{ marginBottom: 48 }}>
           <DataTable>
             <DataTable.Row>
               <DataTable.Cell>
@@ -138,8 +138,11 @@ export default function BudgetScreen () {
         <View>
           {Object.entries(expenses.data).sort(sorter).map(([date, dailyData]) => (
             <View key={date} style={{ marginBottom: 24 }}>
-              <TouchableRipple onPress={() => router.push(`/(tabs)/(budget)/${date}`)}>
-                <Text variant="titleSmall" style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+              <TouchableRipple
+                onPress={() => router.push(`/(tabs)/(budget)/${date}`)}
+                style={{ minHeight: 48, justifyContent: "center" }}
+              >
+                <Text variant="titleSmall" style={{ paddingHorizontal: 16 }}>
                   {dayjs(date).format("MMM D")}
                 </Text>
               </TouchableRipple>

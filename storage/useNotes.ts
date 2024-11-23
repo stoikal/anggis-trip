@@ -2,6 +2,8 @@ import { Note } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 
+// TODO migrate to sqlite
+// TODO implement pinned notes
 export default function useNotes (date: string) {
   const [notes, setNotes] = useState<Note[]>([]);
 
