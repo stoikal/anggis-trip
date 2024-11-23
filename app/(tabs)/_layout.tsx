@@ -20,7 +20,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="(budget)/index"
+        name="(budget)"
         options={{
           title: 'Budget',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="yensign.circle" color={color} />,

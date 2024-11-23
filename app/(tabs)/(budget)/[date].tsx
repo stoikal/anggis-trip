@@ -1,6 +1,6 @@
 import CreateDayExpenseForm from '@/components/CreateDayExpenseForm';
 import DailyBudgetForm from '@/components/DailyBudgetForm';
-import EditDayExpenseForm from '@/components/EditdayExpenseForm';
+import EditDayExpenseForm from '@/components/EditDayExpenseForm';
 import { useDayExpenses } from '@/contexts/dayExpenses';
 import useDailyBudget from '@/storage/useDailyBudget';
 import { Expense } from '@/types';
@@ -60,14 +60,14 @@ export default function DailyExpenses() {
     const tomorrow = dayjs(date as string).add(1, "day");
     const tommorowDatestring = tomorrow.format("YYYY-MM-DD");
 
-    router.push(`/(tabs)/(agenda)/expenses/${tommorowDatestring}`)
+    router.push(`/(budget)/${tommorowDatestring}`)
   }
 
   const prevDay = () => {
     const yesterday = dayjs(date as string).subtract(1, "day");
     const yesterdayDatestring = yesterday.format("YYYY-MM-DD");
 
-    router.push(`/(tabs)/(agenda)/expenses/${yesterdayDatestring}`)
+    router.push(`/(budget)/${yesterdayDatestring}`)
   }
 
   return (

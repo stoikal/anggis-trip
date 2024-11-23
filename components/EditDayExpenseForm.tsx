@@ -1,10 +1,11 @@
 import { CATEGORIES } from "@/db/db";
-import { Expense, useDayExpenses } from "@/contexts/dayExpenses";
+import { useDayExpenses } from "@/contexts/dayExpenses";
 import React, { useMemo, useState } from "react";
 import { View } from "react-native";
 import { Button, Dialog, IconButton, Text, TextInput } from "react-native-paper";
 import { PaperSelect } from 'react-native-paper-select';
 import { ListItem } from "react-native-paper-select/lib/typescript/interface/paperSelect.interface";
+import { Expense } from "@/types";
 
 type EditDayExpenseFormProps = {
   expense: Expense;

@@ -9,7 +9,7 @@ export default function AgendaLayout() {
       }}
     >
       <Stack.Screen name="index" />
-      <Stack.Screen name="calendar" />
+      <Stack.Screen name="[date]" />
     </Stack>
   );
 }

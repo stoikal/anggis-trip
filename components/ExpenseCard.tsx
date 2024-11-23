@@ -18,7 +18,7 @@ export default function ExpenseCard (props: ExpenseCardProps) {
   const router = useRouter();
 
   const navigate = () => {
-    router.push(`/(tabs)/(agenda)/expenses/${props.date}`)
+    router.push(`/(budget)/${props.date}`)
   }
 
   return (
