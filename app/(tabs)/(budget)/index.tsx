@@ -1,12 +1,14 @@
 
 import DateRangeInput from "@/components/DateRangeInput";
+import EditDayExpenseForm from "@/components/EditDayExpenseForm";
 import COLORS from "@/constants/colors";
 import useExpenses, { DailyData, UseExpensesData } from "@/storage/useExpenses";
+import { Expense } from "@/types";
 import dayjs from "dayjs";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
-import { Appbar, DataTable, Divider, Text } from "react-native-paper"
+import { Appbar, DataTable, Divider, Modal, Text, TouchableRipple } from "react-native-paper"
 
 const DEFAULT_RANGE = {
   start: "2024-11-22",
@@ -64,6 +66,23 @@ export default function BudgetScreen () {
     return totalBudgeted - totalActual;
   }, [totalActual, totalBudgeted]);
 
+  const router = useRouter();
+
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+
+  const onEditCancel = () => {
+    setEditingExpense(null);
+  }
+
+  const onEditSuccess = () => {
+    setEditingExpense(null);
+    expenses.loadRange(dateRange.start, dateRange.end);
+  }
+
+  const getExpenseHandler = (e: Expense) => () => {
+    setEditingExpense(e)
+  }
+
   return (
     <>
       <Appbar.Header>
@@ -105,15 +124,12 @@ export default function BudgetScreen () {
                 <Text variant="titleSmall">Δ</Text>
               </DataTable.Cell>
               <DataTable.Cell numeric>
-                {delta < 0 ? (
-                  <Text variant="titleSmall" style={{ color: COLORS.HONGKONG }}>
-                    ({Math.abs(delta).toLocaleString()})
-                  </Text>
-                ) : (
-                  <Text variant="titleSmall" style={{ color: "green" }}>
-                    {Math.abs(delta).toLocaleString()}
-                  </Text>
-                )}
+                <Text
+                  variant="titleSmall"
+                  style={{ color: delta < 0 ? COLORS.HONGKONG :"green" }}
+                >
+                  {delta.toLocaleString()}
+                </Text>
               </DataTable.Cell>
             </DataTable.Row>
           </DataTable>
@@ -122,16 +138,18 @@ export default function BudgetScreen () {
         <View>
           {Object.entries(expenses.data).sort(sorter).map(([date, dailyData]) => (
             <View key={date} style={{ marginBottom: 24 }}>
-              <Text variant="titleSmall" style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-                {dayjs(date).format("MMM D")}
-              </Text>
+              <TouchableRipple onPress={() => router.push(`/(tabs)/(budget)/${date}`)}>
+                <Text variant="titleSmall" style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+                  {dayjs(date).format("MMM D")}
+                </Text>
+              </TouchableRipple>
 
               <Divider />
 
               <View>
                 <DataTable>
                   {dailyData.expenses.map((expense) => (
-                    <DataTable.Row key={expense.id}>
+                    <DataTable.Row key={expense.id} onPress={getExpenseHandler(expense)}>
                       <DataTable.Cell>
                         <Text>{expense.name}</Text>
                       </DataTable.Cell>
@@ -151,39 +169,24 @@ export default function BudgetScreen () {
           ))}
         </View>
 
-        {/* {getList(100).map(item => (
-          <Text key={item.key}>{item.key}</Text>
-        ))} */}
-
         <View style={styles.padBottom}/>
       </ScrollView>
-    </>
-  )
-}
 
-type RowProps = {
-  label: string,
-  value: string,
-  valueColor?: string
-}
-
-function Row (props: RowProps) {
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 4
-      }}
-    >
-      <Text variant="titleMedium">{props.label} </Text>
-      <Text
-        variant="titleMedium"
-        style={{ color: props.valueColor }}
+      <Modal
+        dismissable={false}
+        visible={editingExpense !== null}
+        contentContainerStyle={{ backgroundColor: "white", width: "90%", marginHorizontal: "auto"}}
       >
-        {props.value}
-      </Text>
-    </View>
+        {editingExpense && (
+          <EditDayExpenseForm
+            expense={editingExpense}
+            onCancel={onEditCancel}
+            onSuccess={onEditSuccess}
+          />
+        )}
+      </Modal>
+
+    </>
   )
 }
 
