@@ -1,6 +1,6 @@
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs, { Dayjs } from 'dayjs';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import { useState } from 'react';
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
 
@@ -25,6 +25,7 @@ export default function DateRangeInput(props: DateRangeInputProps) {
   const closeModal = () => setIsModalVisible(false);
 
   const cancel = () => {
+    Keyboard.dismiss()
     setStartDate(dayjs(props.value.start));
     setEndDate(dayjs(props.value.end));
 
@@ -32,6 +33,7 @@ export default function DateRangeInput(props: DateRangeInputProps) {
   }
 
   const submit = () => {
+    Keyboard.dismiss()
     props.onChange({
       start: startDate.format("YYYY-MM-DD"),
       end: endDate.format("YYYY-MM-DD")
@@ -55,6 +57,7 @@ export default function DateRangeInput(props: DateRangeInputProps) {
         label="Date Range"
         value={value}
         onPress={openModal}
+        style={{ backgroundColor: "transparent"}}
       />
 
       <Portal>
