@@ -16,9 +16,10 @@ import COLORS from '@/constants/colors';
 import IMAGES from '@/constants/images';
 import DAYS from '@/data/days';
 import FLIGHTS, { Flight } from '@/data/flights';
-import useNotes, { Note } from '@/storage/useNotes';
+import useNotes from '@/storage/useNotes';
 import ExpenseCard from '@/components/ExpenseCard';
 import CreateDayExpenseForm from '@/components/CreateDayExpenseForm';
+import { Note } from '@/types';
 
 dayjs.extend(duration);
 dayjs.extend(utc);

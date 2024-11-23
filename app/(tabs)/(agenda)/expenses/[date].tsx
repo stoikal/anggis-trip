@@ -1,8 +1,9 @@
 import CreateDayExpenseForm from '@/components/CreateDayExpenseForm';
 import DailyBudgetForm from '@/components/DailyBudgetForm';
 import EditDayExpenseForm from '@/components/EditdayExpenseForm';
-import { Expense, useDayExpenses } from '@/contexts/dayExpenses';
+import { useDayExpenses } from '@/contexts/dayExpenses';
 import useDailyBudget from '@/storage/useDailyBudget';
+import { Expense } from '@/types';
 import dayjs from 'dayjs';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';

@@ -1,10 +1,6 @@
+import { Note } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-
-export type Note = {
-  title: string;
-  content: string;
-}
 
 export default function useNotes (date: string) {
   const [notes, setNotes] = useState<Note[]>([]);

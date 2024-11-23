@@ -1,15 +1,7 @@
 // import useDayExpenses from "@/storage/useDayExpenses";
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useSQLiteContext } from "expo-sqlite";
-
-export type Expense = {
-  id: number;
-  name: string;
-  date: string;
-  amount: number;
-  category: string;
-}
-
+import { Expense } from "@/types";
 
 type DayExpensesContextType = {
   expenses: Expense[];
@@ -82,4 +74,3 @@ export const useDayExpenses = (date: string) => {
     deleteById,
   }
 }
-
