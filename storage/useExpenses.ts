@@ -34,7 +34,7 @@ export default function useExpenses () {
         [from, to]
       );
 
-      const budgetItems = await db.getAllAsync<Expense>(
+      const budgetItems = await db.getAllAsync<Budget>(
         "SELECT * FROM daily_budget WHERE date BETWEEN ? AND ?",
         [from, to]
       );
@@ -71,7 +71,6 @@ export default function useExpenses () {
     
       result[b.date].budget = b.amount;
     })
-
 
     return result
   }, [budgets, expenses])
