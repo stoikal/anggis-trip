@@ -90,7 +90,7 @@ export default function BudgetScreen () {
       </Appbar.Header>
 
       <ScrollView style={styles.container}>
-        <View style={{ marginBottom: 16, paddingHorizontal: 16 }}>
+        <View style={{ padding: 16 }}>
           <DateRangeInput
             value={dateRange}
             onChange={(value) => {
