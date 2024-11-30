@@ -56,18 +56,31 @@ export default function WeekViewScreen () {
     const diff = dayjs(flight.departure.timestamp).diff(from);
     const duration = dayjs.duration(diff);
 
+    const years = duration.years();
+    const months = duration.months();
     const days = duration.days();
     const hours = duration.hours();
     const minutes = duration.minutes();
 
     let result = "";
 
+    if (years > 1) {
+      result += `${years} years `;
+    } else if (years === 1) {
+      result += `${years} year `;
+    }
+
+    if (months > 1) {
+      result += `${months} months `;
+    } else if (months === 1) {
+      result += `${months} month `;
+    }
+
     if (days > 1) {
       result += `${days} days `;
     } else if (days === 1) {
       result += `${days} day `;
-    } else {
-
+    } else if (years === 0 && months === 0) {
       if (hours > 1) {
         result += `${hours} hours `;
       } else if (hours === 1) {
