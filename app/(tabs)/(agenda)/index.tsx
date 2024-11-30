@@ -94,6 +94,12 @@ export default function WeekViewScreen () {
       }
     }
 
+    if (!result) {
+      if (dayjs(flight.arrival.timestamp).isAfter(from)) {
+        result += "en route";
+      }
+    }
+
     return result;
   }, [currentTime, selectedDate])
 
