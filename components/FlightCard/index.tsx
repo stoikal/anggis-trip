@@ -27,7 +27,7 @@ export default function FlightCard (props: FlightCardProps) {
     if (days) result += `${days}d `;
     if (hours) result += `${hours}h `;
     if (minutes) result += `${minutes}m `;
-    
+
     return result;
   }
 
@@ -67,7 +67,7 @@ export default function FlightCard (props: FlightCardProps) {
           <Text variant="headlineMedium">&nbsp;{props.flight.arrival.airport.iata}</Text>
         </View>
       </View>
-      
+
       <View style={{ flexDirection: "row", marginBottom: 12 }}>
         <FlightEndpointDetail
           endpoint={props.flight.departure}

@@ -91,7 +91,7 @@ export default function WeekViewScreen () {
 
     FLIGHTS.forEach((flight) => {
       const isInSelectedDay = dayjs(flight.departure.timestamp).isSame(selectedDate, "day");
-      const isFuture = dayjs(flight.departure.timestamp).isAfter(now);
+      const isFuture = dayjs(flight.arrival.timestamp).isAfter(now);
       if (isInSelectedDay && isFuture) {
         result.push(flight);
       }
